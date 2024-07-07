@@ -48,7 +48,7 @@ services:
         delay: 10s
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.greenbeautycenter_wordpress.rule=Host(`www.greenbeautycenter.fr`)"
+        - "traefik.http.routers.greenbeautycenter_wordpress.rule=Host(`greenbeautycenter.fr`)"
         - "traefik.http.services.greenbeautycenter_wordpress.loadbalancer.server.port=80"
     networks:
       - greenbeauty_network
