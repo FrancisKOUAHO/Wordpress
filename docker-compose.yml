@@ -8,8 +8,8 @@ services:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
     ports:
-      - "80:80"  # Traefik should handle the external port 80
-      - "8080:8080"
+      - "80:80"
+      - "8081:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
@@ -33,7 +33,7 @@ services:
     volumes:
       - wp_data:/var/www/html
     ports:
-      - 8081:80  # Change the host port to 8081 to avoid conflict with Traefik
+      - 8082:80
     restart: always
     environment:
       - WORDPRESS_DB_HOST=db
