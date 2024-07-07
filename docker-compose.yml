@@ -6,10 +6,10 @@ services:
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--entrypoints.web.address=:8085"
+      - "--entrypoints.web.address=:9085"
     ports:
-      - "8085:80"
-      - "8086:8080"
+      - "9085:80"
+      - "9086:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
