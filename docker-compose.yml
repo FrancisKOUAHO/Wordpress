@@ -6,19 +6,20 @@ services:
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.address=:8082"  # Changed to avoid conflict
     ports:
-      - "80:80"
-      - "8081:8080"
+      - "8082:80"  # Changed to avoid conflict
+      - "8081:8080"  # Changed to avoid conflict
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - greenbeauty_network
 
   db:
     image: mariadb:10.6.4-focal
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
       - db_data:/var/lib/mysql
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=somewordpress
       - MYSQL_DATABASE=wordpress
@@ -27,14 +28,15 @@ services:
     expose:
       - 3306
       - 33060
+    networks:
+      - greenbeauty_network
 
   wordpress:
     image: wordpress:latest
     volumes:
       - wp_data:/var/www/html
     ports:
-      - 8082:80
-    restart: always
+      - 8083:80  # Changed to avoid conflict
     environment:
       - WORDPRESS_DB_HOST=db
       - WORDPRESS_DB_USER=wordpress
@@ -52,8 +54,13 @@ services:
         - "traefik.docker.lbswarm=true"
         - "traefik.docker.network=tabletap"
         - "traefik.http.routers.landing.rule=Host(`https://www.greenbeautycenter.fr`)"
-        - "traefik.http.services.landing.loadbalancer.server.port=80"
+        - "traefik.http.services.landing.loadbalancer.server.port=8083"
+    networks:
+      - greenbeauty_network
 
 volumes:
   db_data:
   wp_data:
+
+networks:
+  greenbeauty_network:
