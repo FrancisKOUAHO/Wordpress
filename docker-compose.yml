@@ -6,7 +6,7 @@ services:
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--entrypoints.web.address=:9085"
+      - "--entrypoints.web.address=:8087"
     ports:
       - "9085:80"
       - "9086:8080"
