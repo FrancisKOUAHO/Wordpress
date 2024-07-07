@@ -53,7 +53,7 @@ services:
         - "traefik.enable=true"
         - "traefik.docker.lbswarm=true"
         - "traefik.docker.network=greenbeauty_network"
-        - "traefik.http.routers.landing.rule=Host(`https://www.greenbeautycenter.fr`)"
+        - "traefik.http.routers.landing.rule=Host(`greenbeautycenter.fr`)"
         - "traefik.http.services.landing.loadbalancer.server.port=8087"
     networks:
       - greenbeauty_network
