@@ -1,3 +1,5 @@
+version: '3.3'
+
 services:
   traefik:
     image: traefik:v3.0
@@ -6,16 +8,13 @@ services:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
     ports:
-      - "80:80"
+      - "80:80"  # Traefik should handle the external port 80
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   db:
-    # We use a mariadb image which supports both amd64 & arm64 architecture
     image: mariadb:10.6.4-focal
-    # If you really want to use MySQL, uncomment the following line
-    #image: mysql:8.0.27
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
       - db_data:/var/lib/mysql
@@ -28,12 +27,13 @@ services:
     expose:
       - 3306
       - 33060
+
   wordpress:
     image: wordpress:latest
     volumes:
       - wp_data:/var/www/html
     ports:
-      - 80:80
+      - 8081:80  # Change the host port to 8081 to avoid conflict with Traefik
     restart: always
     environment:
       - WORDPRESS_DB_HOST=db
@@ -44,7 +44,6 @@ services:
       mode: replicated
       replicas: 1
       update_config:
-        order: start-first
         parallelism: 1
         failure_action: rollback
         delay: 10s
@@ -54,6 +53,7 @@ services:
         - "traefik.docker.network=tabletap"
         - "traefik.http.routers.landing.rule=Host(`https://www.greenbeautycenter.fr`)"
         - "traefik.http.services.landing.loadbalancer.server.port=80"
+
 volumes:
   db_data:
   wp_data:
