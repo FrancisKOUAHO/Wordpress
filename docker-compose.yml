@@ -37,7 +37,6 @@ services:
       - "./data/greenbeautycenter:/var/www/html"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "./apache-config.conf:/etc/apache2/conf-available/servername.conf"
-    command: /bin/sh -c "a2enconf servername && apache2-foreground"
     networks:
       - traefik_network
     labels:
