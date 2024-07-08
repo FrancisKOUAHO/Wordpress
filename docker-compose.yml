@@ -8,12 +8,12 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.website1_resolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.website1_resolver.acme.email=kouahofrancis@gmail.com"
-      - "--certificatesresolvers.website1_resolver.acme.storage=/letsencrypt/greenbeautycenter.json"
-      - "--certificatesresolvers.website2_resolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.website2_resolver.acme.email=kouahofrancis@gmail.com"
-      - "--certificatesresolvers.website2_resolver.acme.storage=/letsencrypt/troisheurestrente.json"
+      - "--certificatesresolvers.greenbeautycenter_resolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.greenbeautycenter_resolver.acme.email=kouahofrancis@gmail.com"
+      - "--certificatesresolvers.greenbeautycenter_resolver.acme.storage=/letsencrypt/greenbeautycenter.json"
+      - "--certificatesresolvers.troisheurestrente_resolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.troisheurestrente_resolver.acme.email=kouahofrancis@gmail.com"
+      - "--certificatesresolvers.troisheurestrente_resolver.acme.storage=/letsencrypt/troisheurestrente.json"
     ports:
       - "80:80"
       - "443:443"
@@ -43,7 +43,7 @@ services:
       - "traefik.http.routers.greenbeautycenter.entrypoints=websecure"
       - "traefik.http.routers.greenbeautycenter.rule=Host(`greenbeautycenter.fr`)"
       - "traefik.http.routers.greenbeautycenter.tls=true"
-      - "traefik.http.routers.greenbeautycenter.tls.certresolver=wordpress_resolver"
+      - "traefik.http.routers.greenbeautycenter.tls.certresolver=greenbeautycenter_resolver"
 
   troisheurestrente:
     container_name: troisheurestrente
@@ -64,7 +64,7 @@ services:
       - "traefik.http.routers.troisheurestrente.entrypoints=websecure"
       - "traefik.http.routers.troisheurestrente.rule=Host(`trois-heures-trente.com`)"
       - "traefik.http.routers.troisheurestrente.tls=true"
-      - "traefik.http.routers.troisheurestrente.tls.certresolver=website2_resolver"
+      - "traefik.http.routers.troisheurestrente.tls.certresolver=troisheurestrente_resolver"
 
   mariadb:
     image: mariadb:latest
