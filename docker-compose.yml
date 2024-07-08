@@ -12,12 +12,12 @@ services:
       - "--certificatesresolvers.greenbeautycenter_resolver.acme.email=kouahofrancis@gmail.com"
       - "--certificatesresolvers.greenbeautycenter_resolver.acme.storage=/letsencrypt/greenbeautycenter.json"
       - "--certificatesresolvers.troisheurestrente_resolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.troisheurestrente_resolver.acme.email=oliviafkouaho@gmail.com"
+      - "--certificatesresolvers.troisheurestrente_resolver.acme.email=kouahofrancis@gmail.com"
       - "--certificatesresolvers.troisheurestrente_resolver.acme.storage=/letsencrypt/troisheurestrente.json"
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+    #      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./data/traefik/letsencrypt:/letsencrypt"
@@ -36,12 +36,14 @@ services:
     volumes:
       - "./data/greenbeautycenter:/var/www/html"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
+      - "./apache-config.conf:/etc/apache2/conf-available/servername.conf"
+    command: /bin/sh -c "a2enconf servername && apache2-foreground"
     networks:
       - traefik_network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.greenbeautycenter.entrypoints=websecure"
-      - "traefik.http.routers.greenbeautycenter.rule=Host(`greenbeautycenter.fr`)"
+      - "traefik.http.routers.greenbeautycenter.rule=Host(`greenbeautycenter.fr)"
       - "traefik.http.routers.greenbeautycenter.tls=true"
       - "traefik.http.routers.greenbeautycenter.tls.certresolver=greenbeautycenter_resolver"
 
@@ -59,6 +61,8 @@ services:
     volumes:
       - "./data/troisheurestrente:/var/www/html"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
+      - "./apache-config.conf:/etc/apache2/conf-available/servername.conf"
+
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.troisheurestrente.entrypoints=websecure"
