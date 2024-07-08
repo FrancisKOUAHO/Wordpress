@@ -2,52 +2,61 @@ version: '3.8'
 
 services:
   traefik:
-    image: traefik:v3.0
+    container_name: traefik
+    image: traefik:v2.5
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.website1_resolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.website1_resolver.acme.email=kouahofrancis@gmail.com"
+      - "--certificatesresolvers.website1_resolver.acme.storage=/letsencrypt/wordpress.json"
+      - "--certificatesresolvers.website2_resolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.website2_resolver.acme.email=kouahofrancis@gmail.com"
+      - "--certificatesresolvers.website2_resolver.acme.storage=/letsencrypt/wordpress.json"
     ports:
-      - "9085:80"
-      - "9086:8080"
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./data/traefik/letsencrypt:/letsencrypt"
     networks:
-      - greenbeauty_network
-
-  db:
-    image: mariadb:10.6.4-focal
-    command: '--default-authentication-plugin=mysql_native_password'
-    volumes:
-      - db_data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=somewordpress
-      - MYSQL_DATABASE=wordpress
-      - MYSQL_USER=wordpress
-      - MYSQL_PASSWORD=wordpress
-    networks:
-      - greenbeauty_network
+      - traefik_network
 
   wordpress:
+    container_name: wordpress
     image: wordpress:latest
-    volumes:
-      - wp_data:/var/www/html
+    restart: always
     environment:
-      - WORDPRESS_DB_HOST=db
-      - WORDPRESS_DB_USER=wordpress
-      - WORDPRESS_DB_PASSWORD=wordpress
-      - WORDPRESS_DB_NAME=wordpress
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: 123
+      WORDPRESS_DB_NAME: website1WP
+    volumes:
+      - "./data/website1:/var/www/html"
+      - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
+    networks:
+      - traefik_network
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.wordpress.entrypoints=websecure"
       - "traefik.http.routers.wordpress.rule=Host(`greenbeautycenter.fr`)"
-      - "traefik.http.services.wordpress.loadbalancer.server.port=80"
-    networks:
-      - greenbeauty_network
+      - "traefik.http.routers.wordpress.tls=true"
+      - "traefik.http.routers.wordpress.tls.certresolver=wordpress_resolver"
 
-volumes:
-  db_data:
-  wp_data:
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+    networks:
+      - traefik_network
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
+      - ./create_databases.sql:/docker-entrypoint-initdb.d/create_databases.sql
 
 networks:
-  greenbeauty_network:
+  traefik_network:
     external: true
