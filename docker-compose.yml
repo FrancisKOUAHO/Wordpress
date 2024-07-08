@@ -12,12 +12,12 @@ services:
       - "--certificatesresolvers.greenbeautycenter_resolver.acme.email=kouahofrancis@gmail.com"
       - "--certificatesresolvers.greenbeautycenter_resolver.acme.storage=/letsencrypt/greenbeautycenter.json"
       - "--certificatesresolvers.troisheurestrente_resolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.troisheurestrente_resolver.acme.email=kouahofrancis@gmail.com"
+      - "--certificatesresolvers.troisheurestrente_resolver.acme.email=oliviafkouaho@gmail.com"
       - "--certificatesresolvers.troisheurestrente_resolver.acme.storage=/letsencrypt/troisheurestrente.json"
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
+      # - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./data/traefik/letsencrypt:/letsencrypt"
@@ -30,9 +30,9 @@ services:
     restart: always
     environment:
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: greenbeautycenter
-      WORDPRESS_DB_PASSWORD: greenbeautycenter
-      WORDPRESS_DB_NAME: greenbeautycenter
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: 123
+      WORDPRESS_DB_NAME: website1WP
     volumes:
       - "./data/greenbeautycenter:/var/www/html"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
@@ -51,9 +51,9 @@ services:
     restart: always
     environment:
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: troisheurestrente
-      WORDPRESS_DB_PASSWORD: troisheurestrente
-      WORDPRESS_DB_NAME: troisheurestrente
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: 123
+      WORDPRESS_DB_NAME: website2WP
     networks:
       - traefik_network
     volumes:
@@ -62,7 +62,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.troisheurestrente.entrypoints=websecure"
-      - "traefik.http.routers.troisheurestrente.rule=Host(`trois-heures-trente.com`)"
+      - "traefik.http.routers.troisheurestrente.rule=Host(`troisheurestrente.com`)"
       - "traefik.http.routers.troisheurestrente.tls=true"
       - "traefik.http.routers.troisheurestrente.tls.certresolver=troisheurestrente_resolver"
 
