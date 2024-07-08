@@ -6,7 +6,7 @@ services:
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--entrypoints.web.address=:8087"
+      - "--entrypoints.web.address=:80"
     ports:
       - "9085:80"
       - "9086:8080"
@@ -32,24 +32,15 @@ services:
     image: wordpress:latest
     volumes:
       - wp_data:/var/www/html
-    ports:
-      - "8087:80"
     environment:
       - WORDPRESS_DB_HOST=db
       - WORDPRESS_DB_USER=wordpress
       - WORDPRESS_DB_PASSWORD=wordpress
       - WORDPRESS_DB_NAME=wordpress
-    deploy:
-      mode: replicated
-      replicas: 1
-      update_config:
-        parallelism: 1
-        failure_action: rollback
-        delay: 10s
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.greenbeautycenter_wordpress.rule=Host(`greenbeautycenter.fr`)"
-        - "traefik.http.services.greenbeautycenter_wordpress.loadbalancer.server.port=80"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.wordpress.rule=Host(`localhost`)"
+      - "traefik.http.services.wordpress.loadbalancer.server.port=80"
     networks:
       - greenbeauty_network
 
