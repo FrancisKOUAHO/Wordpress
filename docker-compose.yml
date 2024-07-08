@@ -43,7 +43,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.greenbeautycenter.entrypoints=websecure"
-      - "traefik.http.routers.greenbeautycenter.rule=Host(`greenbeautycenter.fr)"
+      - "traefik.http.routers.greenbeautycenter.rule=Host(`greenbeautycenter.fr`)"
       - "traefik.http.routers.greenbeautycenter.tls=true"
       - "traefik.http.routers.greenbeautycenter.tls.certresolver=greenbeautycenter_resolver"
 
