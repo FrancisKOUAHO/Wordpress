@@ -65,7 +65,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.troisheurestrente.entrypoints=websecure"
-      - "traefik.http.routers.troisheurestrente.rule=Host(`troisheurestrente.com`)"
+      - "traefik.http.routers.troisheurestrente.rule=Host(`trois-heures-trente.com`)"
       - "traefik.http.routers.troisheurestrente.tls=true"
       - "traefik.http.routers.troisheurestrente.tls.certresolver=troisheurestrente_resolver"
 
