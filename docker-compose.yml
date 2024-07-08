@@ -39,7 +39,7 @@ services:
       - WORDPRESS_DB_NAME=wordpress
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wordpress.rule=Host(`localhost`)"
+      - "traefik.http.routers.wordpress.rule=Host(`greenbeautycenter.fr`)"
       - "traefik.http.services.wordpress.loadbalancer.server.port=80"
     networks:
       - greenbeauty_network
