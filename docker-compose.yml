@@ -10,10 +10,10 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.website1_resolver.acme.tlschallenge=true"
       - "--certificatesresolvers.website1_resolver.acme.email=kouahofrancis@gmail.com"
-      - "--certificatesresolvers.website1_resolver.acme.storage=/letsencrypt/wordpress.json"
+      - "--certificatesresolvers.website1_resolver.acme.storage=/letsencrypt/greenbeautycenter.json"
       - "--certificatesresolvers.website2_resolver.acme.tlschallenge=true"
       - "--certificatesresolvers.website2_resolver.acme.email=kouahofrancis@gmail.com"
-      - "--certificatesresolvers.website2_resolver.acme.storage=/letsencrypt/wordpress.json"
+      - "--certificatesresolvers.website2_resolver.acme.storage=/letsencrypt/troisheurestrente.json"
     ports:
       - "80:80"
       - "443:443"
@@ -24,26 +24,47 @@ services:
     networks:
       - traefik_network
 
-  wordpress:
-    container_name: wordpress
+  greenbeautycenter:
+    container_name: greenbeautycenter
     image: wordpress:latest
     restart: always
     environment:
       WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_USER: root
-      WORDPRESS_DB_PASSWORD: 123
-      WORDPRESS_DB_NAME: website1WP
+      WORDPRESS_DB_USER: greenbeautycenter
+      WORDPRESS_DB_PASSWORD: greenbeautycenter
+      WORDPRESS_DB_NAME: greenbeautycenter
     volumes:
-      - "./data/website1:/var/www/html"
+      - "./data/greenbeautycenter:/var/www/html"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
     networks:
       - traefik_network
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wordpress.entrypoints=websecure"
-      - "traefik.http.routers.wordpress.rule=Host(`greenbeautycenter.fr`)"
-      - "traefik.http.routers.wordpress.tls=true"
-      - "traefik.http.routers.wordpress.tls.certresolver=wordpress_resolver"
+      - "traefik.http.routers.greenbeautycenter.entrypoints=websecure"
+      - "traefik.http.routers.greenbeautycenter.rule=Host(`greenbeautycenter.fr`)"
+      - "traefik.http.routers.greenbeautycenter.tls=true"
+      - "traefik.http.routers.greenbeautycenter.tls.certresolver=wordpress_resolver"
+
+  troisheurestrente:
+    container_name: troisheurestrente
+    image: wordpress:latest
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: troisheurestrente
+      WORDPRESS_DB_PASSWORD: troisheurestrente
+      WORDPRESS_DB_NAME: troisheurestrente
+    networks:
+      - traefik_network
+    volumes:
+      - "./data/troisheurestrente:/var/www/html"
+      - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.troisheurestrente.entrypoints=websecure"
+      - "traefik.http.routers.troisheurestrente.rule=Host(`trois-heures-trente.com`)"
+      - "traefik.http.routers.troisheurestrente.tls=true"
+      - "traefik.http.routers.troisheurestrente.tls.certresolver=website2_resolver"
 
   mariadb:
     image: mariadb:latest
