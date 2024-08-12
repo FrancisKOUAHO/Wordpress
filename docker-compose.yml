@@ -40,10 +40,6 @@ services:
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: 123
       WORDPRESS_DB_NAME: website1WP
-      WORDPRESS_SMTP_HOST: smtp.gmail.com
-      WORDPRESS_SMTP_PORT: 587
-      WORDPRESS_SMTP_USER: kouahofrancis@gmail.com
-      WORDPRESS_SMTP_PASS: WAIRECRAFFTERLOUANNE2023@
     volumes:
       - "./data/greenbeautycenter:/var/www/html"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
@@ -66,10 +62,6 @@ services:
       WORDPRESS_DB_USER: root
       WORDPRESS_DB_PASSWORD: 123
       WORDPRESS_DB_NAME: website2WP
-      WORDPRESS_SMTP_HOST: smtp.gmail.com
-      WORDPRESS_SMTP_PORT: 587
-      WORDPRESS_SMTP_USER: kouahofrancis@gmail.com
-      WORDPRESS_SMTP_PASS: WAIRECRAFFTERLOUANNE2023@
     networks:
       - traefik_network
     volumes:
