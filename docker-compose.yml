@@ -91,7 +91,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 123
     ports:
-      - "8081:80"
+      - "8081:8081"
     networks:
       - traefik_network
     volumes:
