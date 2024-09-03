@@ -7,7 +7,8 @@ services:
     command:
       - "--api.insecure=true"
       - "--providers.docker=true"
-      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.address=:8083"       # Port HTTP pour Traefik
+      - "--entrypoints.websecure.address=:8444" # Port HTTPS pour Traefik
       - "--certificatesresolvers.greenbeautycenter_resolver.acme.tlschallenge=true"
       - "--certificatesresolvers.greenbeautycenter_resolver.acme.email=kouahofrancis@gmail.com"
       - "--certificatesresolvers.greenbeautycenter_resolver.acme.storage=/letsencrypt/greenbeautycenter.json"
@@ -15,9 +16,9 @@ services:
       - "--certificatesresolvers.troisheurestrente_resolver.acme.email=kouahofrancis@gmail.com"
       - "--certificatesresolvers.troisheurestrente_resolver.acme.storage=/letsencrypt/troisheurestrente.json"
     ports:
-      - "8082:80"
-      - "8444:443"
-      - "8082:8080"
+      - "8083:80"   # Traefik HTTP
+      - "8444:443"  # Traefik HTTPS
+      - "8085:8080" # Traefik Dashboard
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "./data/traefik/letsencrypt:/letsencrypt"
@@ -68,7 +69,6 @@ services:
       - "./data/troisheurestrente:/var/www/html"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "./apache-config.conf:/etc/apache2/conf-available/servername.conf"
-
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.troisheurestrente.entrypoints=websecure"
