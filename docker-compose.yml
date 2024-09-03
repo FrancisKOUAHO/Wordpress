@@ -15,7 +15,7 @@ services:
       - "--certificatesresolvers.troisheurestrente_resolver.acme.email=kouahofrancis@gmail.com"
       - "--certificatesresolvers.troisheurestrente_resolver.acme.storage=/letsencrypt/troisheurestrente.json"
     ports:
-      - "80:80"
+      - "8082:80"
       - "443:443"
       - "8080:8080"
     volumes:
