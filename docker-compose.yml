@@ -1,36 +1,6 @@
-version: '3.7'
+version: '3.9'
 
 services:
-  traefik:
-    container_name: traefik
-    image: traefik:v2.5
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.greenbeautycenter_resolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.greenbeautycenter_resolver.acme.email=kouahofrancis@gmail.com"
-      - "--certificatesresolvers.greenbeautycenter_resolver.acme.storage=/letsencrypt/greenbeautycenter.json"
-      - "--certificatesresolvers.troisheurestrente_resolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.troisheurestrente_resolver.acme.email=kouahofrancis@gmail.com"
-      - "--certificatesresolvers.troisheurestrente_resolver.acme.storage=/letsencrypt/troisheurestrente.json"
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock"
-      - "./data/traefik/letsencrypt:/letsencrypt"
-    networks:
-      - traefik_network
-
-  mailhog:
-    image: mailhog/mailhog
-    container_name: mailhog
-    ports:
-      - "1025:1025"
-      - "8025:8025"
-
   greenbeautycenter:
     container_name: greenbeautycenter
     image: wordpress:latest
