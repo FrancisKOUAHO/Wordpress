@@ -21,7 +21,7 @@ services:
       - "traefik.http.routers.greenbeautycenter.entrypoints=websecure"
       - "traefik.http.routers.greenbeautycenter.rule=Host(`greenbeautycenter.fr`)"
       - "traefik.http.routers.greenbeautycenter.tls=true"
-      - "traefik.http.routers.greenbeautycenter.tls.certresolver=greenbeautycenter_resolver"
+      - "traefik.http.routers.greenbeautycenter.tls.certresolver=myresolver"  # Mise à jour ici
 
   troisheurestrente:
     container_name: troisheurestrente
@@ -38,13 +38,12 @@ services:
       - "./data/troisheurestrente:/var/www/html"
       - "./uploads.ini:/usr/local/etc/php/conf.d/uploads.ini"
       - "./apache-config.conf:/etc/apache2/conf-available/servername.conf"
-
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.troisheurestrente.entrypoints=websecure"
       - "traefik.http.routers.troisheurestrente.rule=Host(`trois-heures-trente.com`)"
       - "traefik.http.routers.troisheurestrente.tls=true"
-      - "traefik.http.routers.troisheurestrente.tls.certresolver=troisheurestrente_resolver"
+      - "traefik.http.routers.troisheurestrente.tls.certresolver=myresolver"  # Mise à jour ici
 
   mariadb:
     image: mariadb:latest
