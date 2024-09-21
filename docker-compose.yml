@@ -21,7 +21,7 @@ services:
       - "traefik.http.routers.greenbeautycenter.entrypoints=websecure"
       - "traefik.http.routers.greenbeautycenter.rule=Host(`greenbeautycenter.fr`)"
       - "traefik.http.routers.greenbeautycenter.tls=true"
-      - "traefik.http.routers.greenbeautycenter.tls.certresolver=myresolver"  # Mise à jour ici
+      - "traefik.http.routers.greenbeautycenter.tls.certresolver=greenbeautycenter_resolver"
 
   troisheurestrente:
     container_name: troisheurestrente
@@ -43,7 +43,7 @@ services:
       - "traefik.http.routers.troisheurestrente.entrypoints=websecure"
       - "traefik.http.routers.troisheurestrente.rule=Host(`trois-heures-trente.com`)"
       - "traefik.http.routers.troisheurestrente.tls=true"
-      - "traefik.http.routers.troisheurestrente.tls.certresolver=myresolver"  # Mise à jour ici
+      - "traefik.http.routers.troisheurestrente.tls.certresolver=troisheurestrente_resolver"
 
   mariadb:
     image: mariadb:latest
